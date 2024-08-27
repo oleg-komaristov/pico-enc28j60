@@ -4,10 +4,6 @@ if (NOT TARGET _pico_enc28j60_inclusion_marker)
     add_library(_pico_enc28j60_inclusion_marker INTERFACE)
 
     include(pico_sdk_import.cmake)
-    if (PICO_ENC28J60_EXAMPLES_ENABLED)
-        include(pico_extras_import.cmake)
-    endif ()
-
     project(pico_enc28j60)
 
     set(CMAKE_C_STANDARD 11)
@@ -29,14 +25,14 @@ if (NOT TARGET _pico_enc28j60_inclusion_marker)
     set(PICO_ENC28J60_PATH "${PICO_ENC28J60_PATH}" CACHE PATH "Path to pico-enc28j60")
 
     set(LWIP_TEST_PATH "src/core/tcp.c")
-    set(LWIP_PATH ${PICO_EXTRAS_PATH}/lib/lwip)
+    set(LWIP_PATH ${PICO_SDK_PATH}/lib/lwip)
 
     set(PICO_ENC28J60_SRC src/enc28j60.c)
     set(PICO_ENC28J60_LIBS pico_stdlib hardware_spi)
     if (EXISTS ${LWIP_PATH}/${LWIP_TEST_PATH})
         message("lwIP available at ${LWIP_PATH}/${LWIP_TEST_PATH}; TCP/IP support is available.")
         set(PICO_ENC28J60_SRC ${PICO_ENC28J60_SRC} src/ethernetif.c)
-        set(PICO_ENC28J60_LIBS ${PICO_ENC28J60_LIBS} lwip)
+        set(PICO_ENC28J60_LIBS ${PICO_ENC28J60_LIBS} pico_lwip_nosys)
     endif()
 
     add_library(pico_enc28j60 INTERFACE)
